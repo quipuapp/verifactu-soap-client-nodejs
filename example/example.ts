@@ -6,9 +6,9 @@
 import {
   RegistroAlta,
   SistemaInformatico,
-} from './generated/sistemafacturacion'
-import { createClientAsync } from './generated/sistemafacturacion/client'
-import { RegFactuSistemaFacturacion } from './generated/sistemafacturacion/definitions/RegFactuSistemaFacturacion'
+} from '../src/generated/sistemafacturacion'
+import { createClientAsync } from '../src/generated/sistemafacturacion/client'
+import { RegFactuSistemaFacturacion } from '../src/generated/sistemafacturacion/definitions/RegFactuSistemaFacturacion'
 import fs from 'fs'
 
 async function main() {
