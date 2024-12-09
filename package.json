@@ -1,0 +1,42 @@
+{
+  "name": "verifactu-soap-client-nodejs",
+  "version": "1.0.0",
+  "description": "Client SOAP to communicate with VERI*FACTU",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/example.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint 'src/**/*.{js,ts}'",
+    "format": "prettier --write 'src/**/*.{js,ts,json}'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quipuapp/verifactu-soap-client-nodejs.git"
+  },
+  "keywords": [],
+  "author": "Quipu App SL",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quipuapp/verifactu-soap-client-nodejs/issues"
+  },
+  "homepage": "https://github.com/quipuapp/verifactu-soap-client-nodejs#readme",
+  "dependencies": {
+    "@types/node": "^22.10.1",
+    "soap": "^1.1.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "@types/jest": "^29.5.14",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "eslint": "^9.16.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "jest": "^29.7.0",
+    "prettier": "^3.4.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.17.0"
+  }
+}
