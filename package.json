@@ -1,6 +1,6 @@
 {
   "name": "verifactu-soap-client-nodejs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Client SOAP to communicate with VERI*FACTU",
   "main": "dist/index.js",
   "scripts": {
