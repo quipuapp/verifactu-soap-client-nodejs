@@ -1,14 +1,15 @@
 {
   "name": "verifactu-soap-client-nodejs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Client SOAP to communicate with VERI*FACTU",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node src/example.ts",
+    "dev": "ts-node example/example.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint 'src/**/*.{js,ts}'",
-    "format": "prettier --write 'src/**/*.{js,ts,json}'"
+    "format": "prettier --write 'src/**/*.{js,ts,json}'",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

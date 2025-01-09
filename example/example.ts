@@ -6,10 +6,12 @@
 import {
   RegistroAlta,
   SistemaInformatico,
-} from './generated/sistemafacturacion'
-import { createClientAsync } from './generated/sistemafacturacion/client'
-import { RegFactuSistemaFacturacion } from './generated/sistemafacturacion/definitions/RegFactuSistemaFacturacion'
+} from '../src/generated/sistemafacturacion'
+import { createClientAsync } from '../src/generated/sistemafacturacion/client'
+import { RegFactuSistemaFacturacion } from '../src/generated/sistemafacturacion/definitions/RegFactuSistemaFacturacion'
 import fs from 'fs'
+
+import { ID_VERSION_REGISTRO_ALTA, TYPO_HUELLA } from '../src/constants'
 
 async function main() {
   // need a correct certificate and private key
@@ -52,7 +54,7 @@ async function main() {
     }
 
     const registroAlta: RegistroAlta = {
-      IDVersion: '1.0',
+      IDVersion: ID_VERSION_REGISTRO_ALTA,
       IDFactura: {
         IDEmisorFactura: 'B12345678',
         NumSerieFactura: 'A2004-001',
@@ -81,7 +83,7 @@ async function main() {
       SistemaInformatico: sistemaInformatico,
       FechaHoraHusoGenRegistro: new Date(),
 
-      TipoHuella: 'SHA-256',
+      TipoHuella: TYPO_HUELLA,
       Huella: '1234567890', // need create algorithm to generate this value
     }
 
