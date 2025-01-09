@@ -8,7 +8,8 @@
     "dev": "ts-node example/example.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint 'src/**/*.{js,ts}'",
-    "format": "prettier --write 'src/**/*.{js,ts,json}'"
+    "format": "prettier --write 'src/**/*.{js,ts,json}'",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
