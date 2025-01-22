@@ -133,3 +133,7 @@ dist
 # certificate
 certificate*
 private.key
+
+# sample example
+example/request.xml
+example/response.xml
