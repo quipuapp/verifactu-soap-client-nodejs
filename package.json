@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node example/example.ts",
+    "debug": "node  --inspect=0.0.0.0:9231  -r ts-node/register example/example.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint 'src/**/*.{js,ts}'",
     "format": "prettier --write 'src/**/*.{js,ts,json}'",
@@ -38,6 +39,7 @@
     "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0"
+    "typescript-eslint": "^8.17.0",
+    "xml-formatter": "^3.6.3"
   }
 }

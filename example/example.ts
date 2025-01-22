@@ -11,22 +11,21 @@ import { createClientAsync } from '../src/generated/sistemafacturacion/client'
 import { RegFactuSistemaFacturacion } from '../src/generated/sistemafacturacion/definitions/RegFactuSistemaFacturacion'
 import fs from 'fs'
 
-import { ID_VERSION_REGISTRO_ALTA, TYPO_HUELLA } from '../src/constants'
+import { ID_VERSION_REGISTRO_ALTA } from '../src/constants'
+import { ClientSSLSecurity } from '../src/index'
+
+import xmlFormat from 'xml-formatter'
 
 async function main() {
   // need a correct certificate and private key
   // on production it's only possible to use a valid certificate
   // use env var to store the content of the certificate and private key
-  const CERT_PATH = './certificate.crt'
+  const CERT_PATH = './certificate.pem'
   const KEY_PATH = './private.key'
 
   // Client options for the SOAP call
   const options = {
     wsdl_options: {
-      cert: fs.readFileSync(CERT_PATH), // Client certificate
-      key: fs.readFileSync(KEY_PATH), // Private key
-      strictSSL: false, // Allow self-signed certificates
-      rejectUnauthorized: false, // Disable SSL verification (use with caution)
       disableCache: true, // Optional SOAP client options
     },
   }
@@ -34,11 +33,10 @@ async function main() {
   const client = await createClientAsync(
     'https://prewww2.aeat.es/static_files/common/internet/dep/aplicaciones/es/aeat/tikeV1.0/cont/ws/SistemaFacturacion.wsdl',
     options,
+    'https://prewww10.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP',
   )
 
-  client.setEndpoint(
-    'https://prewww2.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP',
-  )
+  client.setSecurity(new ClientSSLSecurity(KEY_PATH, CERT_PATH))
 
   try {
     const sistemaInformatico: SistemaInformatico = {
@@ -56,15 +54,24 @@ async function main() {
     const registroAlta: RegistroAlta = {
       IDVersion: ID_VERSION_REGISTRO_ALTA,
       IDFactura: {
-        IDEmisorFactura: 'B12345678',
+        IDEmisorFactura: 'B66086042',
         NumSerieFactura: 'A2004-001',
-        FechaExpedicionFactura: '05-12-2004',
+        FechaExpedicionFactura: '05-12-2024',
       },
 
       NombreRazonEmisor: 'NombreRazon',
 
       TipoFactura: 'F1',
       DescripcionOperacion: 'DescripcionOperacion',
+
+      Destinatarios: {
+        IDDestinatario: [
+          {
+            NombreRazon: 'Test Socieda SL',
+            NIF: '999999999R',
+          },
+        ],
+      },
 
       Desglose: {
         DetalleDesglose: [
@@ -81,17 +88,17 @@ async function main() {
         PrimerRegistro: 'S',
       },
       SistemaInformatico: sistemaInformatico,
-      FechaHoraHusoGenRegistro: new Date(),
+      FechaHoraHusoGenRegistro: new Date().toISOString(),
 
-      TipoHuella: TYPO_HUELLA,
+      TipoHuella: '01',
       Huella: '1234567890', // need create algorithm to generate this value
     }
 
     const parameters: RegFactuSistemaFacturacion = {
       Cabecera: {
         ObligadoEmision: {
-          NIF: 'B12345678',
           NombreRazon: 'NombreRazon',
+          NIF: 'B66086042',
         },
       },
 
@@ -102,9 +109,13 @@ async function main() {
       ],
     }
 
-    const result = await client.RegFactuSistemaFacturacionAsync(parameters)
-
-    // keep the requesti
+    const result = await client.RegFactuSistemaFacturacionAsync(parameters, {
+      // need send pretty XML else AEAT Soap service not recognize RegistroAlta tag
+      // Codigo[4102].El XML no cumple el esquema. Falta informar campo obligatorio.: RegistroAlta
+      postProcess: function (_xml: string) {
+        return xmlFormat(_xml)
+      },
+    })
 
     console.log('Result:', result)
   } catch (error) {
@@ -113,12 +124,12 @@ async function main() {
     // save the request into a xml file
     const request = client.lastRequest
 
-    fs.writeFileSync('./request.xml', request?.toString() || '')
+    fs.writeFileSync('./example/request.xml', request?.toString() || '')
 
     // save the response into a xml file
     const response = client.lastResponse
 
-    fs.writeFileSync('./response.xml', response)
+    fs.writeFileSync('./example/response.xml', response)
   }
 }
 
