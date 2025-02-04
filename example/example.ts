@@ -12,7 +12,7 @@ import { RegFactuSistemaFacturacion } from '../src/generated/sistemafacturacion/
 import fs from 'fs'
 
 import { ID_VERSION_REGISTRO_ALTA } from '../src/constants'
-import { ClientSSLSecurity } from '../src/index'
+import { ClientSSLSecurityPFX } from '../src/index'
 
 import xmlFormat from 'xml-formatter'
 
@@ -20,8 +20,8 @@ async function main() {
   // need a correct certificate and private key
   // on production it's only possible to use a valid certificate
   // use env var to store the content of the certificate and private key
-  const CERT_PATH = './certificate.pem'
-  const KEY_PATH = './private.key'
+  const CERT_PATH = './certificate.p12'
+  const CERT_PASSPHRASE = process.env.CERT_PASSPHRASE || '...'
 
   // Client options for the SOAP call
   const options = {
@@ -36,7 +36,12 @@ async function main() {
     'https://prewww10.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP',
   )
 
-  client.setSecurity(new ClientSSLSecurity(KEY_PATH, CERT_PATH))
+  client.setSecurity(
+    new ClientSSLSecurityPFX(
+      CERT_PATH, // or a buffer: [fs.readFileSync('/path/to/pfx/cert', 'utf8'),
+      CERT_PASSPHRASE,
+    ),
+  )
 
   try {
     const sistemaInformatico: SistemaInformatico = {
